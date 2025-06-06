@@ -35,6 +35,16 @@ addslots = async (req, res) => {
    
 }
 
+addmulbuildings = async (req, res) => {
+    const buildingsData = req.body;  // array of building objects   
+    try {
+        const newBuildings = await building.insertMany(buildingsData);
+        res.status(200).json({ message: 'Buildings added successfully', buildings: newBuildings });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding buildings', error });
+    }
+}
+
 
 updateBuilding = async (req, res) => {
     const buildingId = req.params.id;  // building ID from URL params
@@ -224,6 +234,7 @@ module.exports = {
     addbuildings,
     addfloors,
     addslots,
+    addmulbuildings,
     updateBuilding,
     updatefloor,
     updateslot,
@@ -235,7 +246,9 @@ module.exports = {
     deleteSlot,
     getallbuildings,
     getallfloors,
-    getallslots
+    getallslots,
+
+
 };
 
 
