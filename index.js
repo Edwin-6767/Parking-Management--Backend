@@ -32,7 +32,7 @@ const app = express();
 const userRouter = require('./routes/userroute');
 const buildingRouter = require('./routes/buildingroute');
 
-const port = process.env.PORT || 3000;
+const port =3000;
 const mongoURI = process.env.MONGO_URL;
 
 app.use(express.json());
