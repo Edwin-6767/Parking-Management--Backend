@@ -26,8 +26,10 @@
 
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors')
 const mongoose = require('mongoose');
 const app = express();
+
 
 const userRouter = require('./routes/userroute');
 const buildingRouter = require('./routes/buildingroute');
@@ -36,7 +38,7 @@ const port =3000;
 const mongoURI = process.env.MONGO_URL;
 
 app.use(express.json());
-
+app.use(cors())
 app.use('/user', userRouter);
 app.use('/building', buildingRouter);
 
