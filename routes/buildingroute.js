@@ -1,5 +1,5 @@
 const express= require('express');
-const { addfloors, addslots,addbuildings,updateBuilding,updatefloor,updateslot,getallbuildings} = require('../controller/BuildingController');
+const { addfloors, addslots,addbuildings,updateBuilding,updatefloor,updateslot,getallbuildings} = require('../controller/Buildingcontroller');
 
 
 const router = express.Router();
