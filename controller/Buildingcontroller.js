@@ -191,7 +191,7 @@ getBuildingById = async (req, res) => {
         const buildingData = await building.findById
             (buildingId);
         if (!buildingData) {
-            return res.status(404).json({ message: 'Building not found' });
+            return res.status(404).json({ message: 'Building not found',hi: buildingId });
         }
         res.status(200).json({ message: 'Building retrieved successfully', buildingData });
     }
