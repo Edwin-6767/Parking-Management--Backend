@@ -188,7 +188,7 @@ getallslots = async (req, res) => {
 getBuildingById = async (req, res) => {
     const buildingId = req.params.id;  // building ID from URL params
     try {
-        const buildingData = await building.find
+        const buildingData = await building.findById
             (buildingId);
         if (!buildingData) {
             return res.status(404).json({ message: 'Building not found' });
