@@ -229,6 +229,56 @@ getSlotById = async (req, res) => {
     }
 }
 
+getBuildingStructure = async (req, res) => {
+  try {
+    const buildingId = req.params.id; // assuming route is /building/:id/details
+
+    const building = await Building.findById(buildingId);
+    if (!building) return res.status(404).json({ message: 'Building not found' });
+
+    const floors = await Floor.find({ building_id: buildingId });
+
+    const floorData = await Promise.all(floors.map(async (floor) => {
+      const sections = floor.section;
+
+      const sectionData = await Promise.all(sections.map(async (section) => {
+        const slots = await Slot.find({
+          floor_id: floor._id,
+          section_id: section._id?.toString() || section._id // handle cases with no ObjectId
+        });
+
+        return {
+          section_name: section.section_name,
+          section_id: section._id,
+          slots: slots.map(slot => ({
+            slot_name: slot.slot_name,
+            startSession: slot.startSession,
+            endSession: slot.endSession,
+            status: slot.status,
+            slot_id: slot._id
+          }))
+        };
+      }));
+
+      return {
+        floor_name: floor.floor_name,
+        floor_id: floor._id,
+        sections: sectionData
+      };
+    }));
+
+    res.json({
+      building_id: building._id,
+      building_name: building.name,
+      address: building.address,
+      floors: floorData
+    });
+  } catch (error) {
+    console.error('Error fetching building details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 module.exports = {
     addbuildings,
@@ -247,6 +297,7 @@ module.exports = {
     getallbuildings,
     getallfloors,
     getallslots,
+    getBuildingStructure
 
 
 };
