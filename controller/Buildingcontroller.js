@@ -228,13 +228,12 @@ getSlotById = async (req, res) => {
         res.status(500).json({ message: 'Error retrieving slot', error });
     }
 }
-
- getBuildingStructure = async (req, res) => {
+getBuildingStructure = async (req, res) => {
   try {
     const buildingId = req.params.id;
 
-    const building = await Building.findById(buildingId);
-    if (!building) return res.status(404).json({ message: 'Building not found' });
+    const buildingData = await building.findById(buildingId); // ✅ fixed
+    if (!buildingData) return res.status(404).json({ message: 'Building not found' });
 
     const floors = await Floor.find({ building_id: buildingId });
     if (!floors || floors.length === 0)
@@ -242,7 +241,7 @@ getSlotById = async (req, res) => {
 
     const floorData = await Promise.all(floors.map(async (floor) => {
       const sectionData = await Promise.all((floor.section || []).map(async (section) => {
-        const sectionId = section._id?.toString(); // handles ObjectId or plain string
+        const sectionId = section._id?.toString();
 
         const slots = await Slot.find({
           floor_id: floor._id.toString(),
@@ -270,9 +269,9 @@ getSlotById = async (req, res) => {
     }));
 
     res.json({
-      building_id: building._id,
-      building_name: building.name,
-      address: building.address,
+      building_id: buildingData._id,
+      building_name: buildingData.name,
+      address: buildingData.address,
       floors: floorData
     });
   } catch (error) {
