@@ -237,15 +237,17 @@ getBuildingStructure = async (req, res) => {
     if (!building) return res.status(404).json({ message: 'Building not found' });
 
     const floors = await Floor.find({ building_id: buildingId });
-
+if (!floors || floors.length === 0) return res.status(404).json({ message: 'No floors found for this building' });
     const floorData = await Promise.all(floors.map(async (floor) => {
       const sections = floor.section;
+        if (!sections || sections.length === 0) return { floor_name: floor.floor_name, floor_id: floor._id, sections: [] };
 
       const sectionData = await Promise.all(sections.map(async (section) => {
         const slots = await Slot.find({
           floor_id: floor._id,
           section_id: section._id?.toString() || section._id // handle cases with no ObjectId
         });
+        
 
         return {
           section_name: section.section_name,
