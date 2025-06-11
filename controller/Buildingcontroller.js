@@ -247,7 +247,7 @@ if (!floors || floors.length === 0) return res.status(404).json({ message: 'No f
           floor_id: floor._id,
           section_id: section._id?.toString() || section._id // handle cases with no ObjectId
         });
-        
+
 
         return {
           section_name: section.section_name,
@@ -277,6 +277,34 @@ if (!floors || floors.length === 0) return res.status(404).json({ message: 'No f
     });
   } catch (error) {
     console.error('Error fetching building details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+addmultipleslot=async (req, res) => {
+  try {
+    const slots = req.body.slots;
+
+    if (!Array.isArray(slots) || slots.length === 0) {
+      return res.status(400).json({ message: 'No slot data provided' });
+    }
+
+    // Optional: Validate each slot object has required fields
+    for (const slot of slots) {
+      const { floor_id, section_id, slot_name, startSession, endSession } = slot;
+      if (!floor_id || !section_id || !slot_name || !startSession || !endSession) {
+        return res.status(400).json({ message: 'Missing required fields in one of the slot objects' });
+      }
+    }
+
+    const createdSlots = await Slot.insertMany(slots);
+    res.status(201).json({
+      message: 'Slots created successfully',
+      slots: createdSlots
+    });
+  } catch (error) {
+    console.error('Error creating slots:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
