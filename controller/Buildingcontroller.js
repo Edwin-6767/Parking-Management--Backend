@@ -327,8 +327,6 @@ module.exports = {
     getallfloors,
     getallslots,
     getBuildingStructure,
-    getFloorStructure,
-    getSlotStructure,
     addmultipleslot
 
 
