@@ -327,7 +327,10 @@ module.exports = {
     getallbuildings,
     getallfloors,
     getallslots,
-    getBuildingStructure
+    getBuildingStructure,
+    getFloorStructure,
+    getSlotStructure,
+    addmultipleslot
 
 
 };

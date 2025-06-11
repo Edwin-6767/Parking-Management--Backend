@@ -1,5 +1,5 @@
 const express= require('express');
-const { addfloors, addslots,addbuildings,addmulbuildings,updateBuilding,updatefloor,updateslot,getallbuildings,getBuildingById,getBuildingStructure} = require('../controller/Buildingcontroller');
+const { addfloors, addslots,addbuildings,addmulbuildings,updateBuilding,updatefloor,updateslot,getallbuildings,getBuildingById,getBuildingStructure,addmultipleslot} = require('../controller/Buildingcontroller');
 
 
 const router = express.Router();
@@ -13,7 +13,7 @@ router.get('/getallbuildings', getallbuildings);
 router.post('/addmulbuildings', addmulbuildings);
 router.get('/getBuildingById/:id', getBuildingById);
 router.get('/getBuildingStructure/:id', getBuildingStructure);
-
+router.post('/addmultipleslot', addmultipleslot);
 
 module.exports = router;
 
