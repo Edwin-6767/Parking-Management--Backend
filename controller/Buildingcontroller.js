@@ -235,7 +235,7 @@ getBuildingStructure = async (req, res) => {
     const buildingData = await building.findById(buildingId); // ✅ fixed
     if (!buildingData) return res.status(404).json({ message: 'Building not found' });
 
-    const floors = await Floor.find({ building_id: buildingId });
+    const floors = await floor.find({ building_id: buildingId });
     if (!floors || floors.length === 0)
       return res.status(404).json({ message: 'No floors found for this building' });
 
@@ -243,7 +243,7 @@ getBuildingStructure = async (req, res) => {
       const sectionData = await Promise.all((floor.section || []).map(async (section) => {
         const sectionId = section._id?.toString();
 
-        const slots = await Slot.find({
+        const slots = await slot.find({
           floor_id: floor._id.toString(),
           section_id: sectionId
         });
