@@ -283,7 +283,7 @@ getBuildingStructure = async (req, res) => {
 
 addmultipleslot=async (req, res) => {
   try {
-    const slots = req.body.slots;
+    const slots = req.body; // Expecting an array of slot objects in the request body
 
     if (!Array.isArray(slots) || slots.length === 0) {
       return res.status(400).json({ message: 'No slot data provided' });
