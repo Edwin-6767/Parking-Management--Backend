@@ -283,7 +283,7 @@ getBuildingStructure = async (req, res) => {
 
 addmultipleslot=async (req, res) => {
   try {
-    const slots = req.body; // Expecting an array of slot objects in the request body
+    const slots = req.body.slots; 
 
     if (!Array.isArray(slots) || slots.length === 0) {
       return res.status(400).json({ message: 'No slot data provided' });
@@ -297,7 +297,7 @@ addmultipleslot=async (req, res) => {
       }
     }
 
-    const createdSlots = await Slot.insertMany(slots);
+    const createdSlots = await slot.insertMany(slots);
     res.status(201).json({
       message: 'Slots created successfully',
       slots: createdSlots
@@ -307,6 +307,40 @@ addmultipleslot=async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+deleteFloorsByName = async (req, res) => {
+    const buildingId = req.params.id;
+    const { floor_name } = req.body;
+
+    console.log('Incoming delete request:', { buildingId, floor_name });
+
+    if (!floor_name) {
+        return res.status(400).json({ message: 'floor_name is required' });
+    }
+
+    try {
+        const result = await floor.deleteMany({
+            building_id: buildingId,
+            floor_name: floor_name
+        });
+
+        console.log('Delete result:', result);
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'No matching floors found' });
+        }
+
+        res.status(200).json({
+            message: `Deleted ${result.deletedCount} floor(s) with name '${floor_name}'`,
+            result
+        });
+    } catch (error) {
+        console.error('Delete error:', error);
+        res.status(500).json({ message: 'Error deleting floors', error: error.message || error });
+    }
+};
+
+
 
 
 module.exports = {
@@ -327,7 +361,8 @@ module.exports = {
     getallfloors,
     getallslots,
     getBuildingStructure,
-    addmultipleslot
+    addmultipleslot,
+    deleteFloorsByName
 
 
 };

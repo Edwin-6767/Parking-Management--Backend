@@ -1,5 +1,5 @@
 const express= require('express');
-const { addfloors, addslots,addbuildings,addmulbuildings,updateBuilding,updatefloor,updateslot,getallbuildings,getBuildingById,getBuildingStructure,addmultipleslot} = require('../controller/Buildingcontroller');
+const { addfloors, addslots,addbuildings,addmulbuildings,updateBuilding,updatefloor,updateslot,getallbuildings,getBuildingById,getBuildingStructure,addmultipleslot,deleteFloorsByName} = require('../controller/Buildingcontroller');
 
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.post('/addmulbuildings', addmulbuildings);
 router.get('/getBuildingById/:id', getBuildingById);
 router.get('/getBuildingStructure/:id', getBuildingStructure);
 router.post('/addmultipleslot', addmultipleslot);
+router.delete('/deleteFloorsByName/:id', deleteFloorsByName);
 
 module.exports = router;
 
